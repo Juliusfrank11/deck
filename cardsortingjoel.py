@@ -1,9 +1,9 @@
 import random
+import os
 import numpy as np
 import csv
 
-#n = input("Type a value for n: ")
-n = 7
+n = input("Type a value for n: ")
 nint = 2*int(n)
 
 def generateDeck():#what it says on the tin
@@ -11,12 +11,13 @@ def generateDeck():#what it says on the tin
     r = 0
     b = 0
     while len(deck) != nint:
-        if random.randint(0,1) and r != nint/2:
+        if r != nint/2:
             deck.append("R")
             r += 1
         elif b != nint/2:
             deck.append("B")
             b += 1
+    random.shuffle(deck)
     return deck
 def createLoopDeckWithRStart(): #these two methods generate the result we want at the end of the random process
     loop_deck_r = []
@@ -53,28 +54,23 @@ count = 0
 trial_time_list = []
 loop_deck_r = createLoopDeckWithRStart()
 loop_deck_b = createLoopDeckWithBStart()
-# limit = input("Enter how many trials you would like to do: ")
+limit = input("Enter how many trials you would like to do: ")
 while count != 50:
     deck = generateDeck()
     number_of_trials = 0
-    # print(deck)
     while deck != loop_deck_r and deck != loop_deck_b:
         shuffleDeck(deck)
-    #    print(deck)
         number_of_trials += 1
-    # print("The number of trials is: " + str(number_of_trials))
     trial_time_list.append(number_of_trials)
     count += 1
-print(trial_time_list)
-print(np.mean(trial_time_list))
-print(max(trial_time_list))
-print(np.std(trial_time_list))
-# print("The average number of trials is: " + str(np.mean(trial_time_list)))
-# print("The maximum is: ", max(trial_time_list))
-# print("The standard deviation is: ", np.std(trial_time_list))
-row = [str(n), str(np.mean(trial_time_list)), str(max(trial_time_list)), str(np.std(trial_time_list))]
-with open("D:\Documents\python projects\\results.csv", "a") as csvFile:
-    writer = csv.writer(csvFile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-    writer.writerow(row)
+print("The average number of trials is: " + str(np.mean(trial_time_list)))
+print("The maximum is: ", max(trial_time_list))
+print("The standard deviation is: ", np.std(trial_time_list))
+row = [str(n), str(limit), str(np.mean(trial_time_list)), str(max(trial_time_list)), str(np.std(trial_time_list))]
 
-csvFile.close()
+path = r'D:\Documents\python projects'
+os.makedirs(path, exist_ok=True)
+file = os.path.join(path, 'results.csv')
+with open(file, 'a', newline='') as f:
+    writer = csv.writer(f)
+    writer.writerow(row)
