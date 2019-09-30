@@ -49,28 +49,30 @@ def shuffleDeck(deck = []):
         put_back = deck.pop(0)
         deck.insert(random.randint(1,nint - 2), put_back) #don't place the top card at the top or the bottom
 
-# main method
-count = 0
-trial_time_list = []
-loop_deck_r = createLoopDeckWithRStart()
-loop_deck_b = createLoopDeckWithBStart()
-limit = input("Enter how many trials you would like to do: ")
-while count != 50:
-    deck = generateDeck()
-    number_of_trials = 0
-    while deck != loop_deck_r and deck != loop_deck_b:
-        shuffleDeck(deck)
-        number_of_trials += 1
-    trial_time_list.append(number_of_trials)
-    count += 1
-print("The average number of trials is: " + str(np.mean(trial_time_list)))
-print("The maximum is: ", max(trial_time_list))
-print("The standard deviation is: ", np.std(trial_time_list))
-row = [str(n), str(limit), str(np.mean(trial_time_list)), str(max(trial_time_list)), str(np.std(trial_time_list))]
-
-path = r'D:\Documents\python projects'
-os.makedirs(path, exist_ok=True)
-file = os.path.join(path, 'results.csv')
-with open(file, 'a', newline='') as f:
-    writer = csv.writer(f)
-    writer.writerow(row)
+def main():
+    count = 0
+    trial_time_list = []
+    loop_deck_r = createLoopDeckWithRStart()
+    loop_deck_b = createLoopDeckWithBStart()
+    limit = input("Enter how many trials you would like to do: ")
+    while count != 50:
+        deck = generateDeck()
+        number_of_trials = 0
+        while deck != loop_deck_r and deck != loop_deck_b:
+            shuffleDeck(deck)
+            number_of_trials += 1
+        trial_time_list.append(number_of_trials)
+        count += 1
+    print("The average number of trials is: " + str(np.mean(trial_time_list)))
+    print("The maximum is: ", max(trial_time_list))
+    print("The standard deviation is: ", np.std(trial_time_list))
+    row = [str(n), str(limit), str(np.mean(trial_time_list)), str(max(trial_time_list)), str(np.std(trial_time_list))]
+    
+    path = r'D:\Documents\python projects'
+    os.makedirs(path, exist_ok=True)
+    file = os.path.join(path, 'results.csv')
+    with open(file, 'a', newline='') as f:
+        writer = csv.writer(f)
+        writer.writerow(row)
+        
+main()
